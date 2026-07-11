@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #18181B;
+  color: #F2EEE6;
+  font-family: "Work Sans", sans-serif;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+#root {
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #C8703E;
+  color: #18181B;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #18181B;
+}
+::-webkit-scrollbar-thumb {
+  background: #C8703E;
+  border-radius: 0;
+}
+
+.tag-label {
+  position: relative;
+  font-family: "Courier Prime", monospace;
+  clip-path: polygon(0% 20%, 8% 0%, 100% 0%, 100% 80%, 92% 100%, 0% 100%);
+}
+
+.tag-label::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.text-outline {
+  -webkit-text-stroke: 1.5px #C8703E;
+  color: transparent;
+}
+
+.bg-grid {
+  /* A cross-hatch of dashed "running stitch" lines instead of a plain grid,
+     tinted copper against the charcoal backdrop. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M0 28 H56' fill='none' stroke='rgba(200,112,62,0.22)' stroke-width='1.6' stroke-dasharray='5 4' stroke-linecap='round'/%3E%3Cpath d='M28 0 V56' fill='none' stroke='rgba(200,112,62,0.22)' stroke-width='1.6' stroke-dasharray='5 4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 56px 56px;
+}
+
+/* ── Animated stitching background (StitchBackground.jsx) ───────────────
+   Each needle travels along its own SVG seam path via `offset-path`
+   (set inline per-element), while a fast child animation makes it bob up
+   and down like it's mid-stitch. The dashed thread line's dash-offset
+   drifts slowly so it reads as being continuously drawn. */
+.stitch-needle {
+  offset-rotate: 0deg;
+  offset-distance: 0%;
+  animation-name: stitchTravel;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.stitch-needle-0 { animation-duration: 9s; }
+.stitch-needle-1 { animation-duration: 11s; animation-delay: -3s; }
+.stitch-needle-2 { animation-duration: 10s; animation-delay: -6s; }
+
+@keyframes stitchTravel {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+.stitch-needle-bob {
+  animation: stitchBob 0.45s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+@keyframes stitchBob {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(10px) scaleY(0.85); }
+}
+
+.stitch-thread {
+  animation: stitchDraw 3.6s linear infinite;
+}
+.stitch-thread-1 { animation-delay: -1.2s; }
+.stitch-thread-2 { animation-delay: -2.4s; }
+
+@keyframes stitchDraw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stitch-needle, .stitch-needle-bob, .stitch-thread {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid #C8703E;
+  outline-offset: 2px;
+}
